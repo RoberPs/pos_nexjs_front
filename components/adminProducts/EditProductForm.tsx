@@ -1,5 +1,4 @@
 "use client"
-
 import { useActionState, useEffect } from "react"
 import { editProduct } from "@/actions/edit-product-action"
 import { redirect, useParams } from "next/navigation"

@@ -6,9 +6,6 @@ import { useCallback, useState } from 'react' //
 import { getImagePath } from '../../src/utils';
 import{ useDropzone} from 'react-dropzone'
 
-
-
-
 const UploadProductImage = ({currentImage}:{currentImage?:string}) => {
 
     

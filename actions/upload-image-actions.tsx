@@ -9,9 +9,7 @@ export const uploadImage = async(formdata:FormData):Promise<string> =>{
    })
 
    const image = await request.json()
-   (image.secure_url)
    return image.secure_url // muestra la imagen desde cloudinary
    
-
 
 }
