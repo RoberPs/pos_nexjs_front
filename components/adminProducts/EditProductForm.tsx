@@ -27,7 +27,7 @@ const EditProductForm = ({children}:{children:React.ReactNode}) => {
 
       if(state.success){
           toast.success(state.success)
-          redirect('/admin/products?page=1')
+          redirect("/admin/products?page=1")
       }
    
 
