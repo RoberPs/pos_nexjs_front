@@ -11,7 +11,7 @@ const EditCouponPage = async({params}:{params:Params}) => {
     
     const request = await fetch(`${process.env.API_URL}/coupons/${id}`)
     const cupon = await request.json()
-
+    
     
     
     return (
