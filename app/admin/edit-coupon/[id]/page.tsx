@@ -3,7 +3,9 @@ import Link from "next/link"
 import Heading from "@/components/ui/Heading"
 import EditCouponForm from "@/components/coupons/EditCouponForm"
 
-const EditCouponPage = async({params}:{params:{id:string}}) => {
+type Params = Promise<{id: string}>
+
+const EditCouponPage = async({params}:{params:Params}) => {
      
     const {id} = await params
     
