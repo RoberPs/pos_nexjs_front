@@ -11,7 +11,7 @@ import{ useDropzone} from 'react-dropzone'
 
 const UploadProductImage = ({currentImage}:{currentImage?:string}) => {
 
-    (currentImage)
+    
     const [image, setImage] = useState('')
 
     const{getRootProps, getInputProps,isDragActive,isDragReject, isDragAccept} = useDropzone({
@@ -29,7 +29,7 @@ const UploadProductImage = ({currentImage}:{currentImage?:string}) => {
                 formData.append('file',file)
             })
             const image = await uploadImage(formData)
-            (image) //URL COMPLETA  DE CLOUDINARY 
+             //URL COMPLETA  DE CLOUDINARY 
             setImage(image)
             
         },[]),

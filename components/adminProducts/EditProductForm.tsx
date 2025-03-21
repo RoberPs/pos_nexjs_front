@@ -4,7 +4,7 @@ import { useActionState, useEffect } from "react"
 import { editProduct } from "@/actions/edit-product-action"
 import { redirect, useParams } from "next/navigation"
 import { toast } from "react-toastify"
-import { revalidatePath } from "next/cache"
+
 
 const EditProductForm = ({children}:{children:React.ReactNode}) => {
 

@@ -9,6 +9,7 @@ const SubmitDeleteForm = ({id}:{id:number}) => {
           const req = await fetch(`${process.env.API_URL}/coupons/${id}`,{
              method:'DELETE',
           })
+          console.log(req)
           /* await req.json() */
           revalidatePath('/admin/coupons')    
     }

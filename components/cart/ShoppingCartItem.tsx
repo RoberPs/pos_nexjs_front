@@ -1,5 +1,5 @@
 
-import {CartProduct, Product} from "@/src/schemas";
+import {CartProduct} from "@/src/schemas";
 import { formatCurrency,getImagePath } from '../../src/utils';
 import { useCartStore } from '@/src/store/cart-store'
 import Image from "next/image";

@@ -2,7 +2,6 @@
 import React from 'react'
 import { useCartStore } from '@/src/store/cart-store'
 import ShoppingCartItem from './ShoppingCartItem'
-import { CartContents } from '@/src/schemas'
 import Amount from './Amount'
 import CouponForm from './CouponForm';
 import SubmitOrder from './SubmitOrder'
