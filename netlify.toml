@@ -1,10 +1,6 @@
 [build]
-  # El comando para construir la app
   command = "npm run build"
-  
-  # El directorio que Netlify debe publicar para Next.js
-  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
-  NEXT_PUBLIC_DOMAIN = "https://pos-nexjs-front.netlify.app"
+  NEXT_PUBLIC_DOMAIN = "https://posventa.netlify.app"
