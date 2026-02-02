@@ -8,23 +8,33 @@ type Params = Promise<{categoryId: string}> //Nueva sintaxis next15
 
 const getCategoryWithProducts = async  (categoryId:string)=>{
      
-    const url = `${process.env.API_URL}/categories/${categoryId}?products=true`
+    const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
 
-    const request  = await fetch(url,{
-        next:{
-          tags:[ 'products-by-category' ]
-        }
-    })
-    const json = await request.json()
-    //safeParse muestra arreglo con errores y success data
-
-    if(!request.ok){
-        redirect('/1')
+    if (!apiBase) {
+        console.error("Missing API_URL environment variable");
+        return { products: [] }; // Fallback para evitar errores en el build
     }
 
-    const products = CategoryWithProductsResponseSchema.parse(json)
-   
-    return products
+    const url = `${apiBase}/categories/${categoryId}?products=true`
+
+    try {
+        const request  = await fetch(url,{
+            next:{
+              tags:[ 'products-by-category' ]
+            }
+        })
+        
+        if(!request.ok){
+            redirect('/1')
+        }
+
+        const json = await request.json()
+        const products = CategoryWithProductsResponseSchema.parse(json)
+        return products
+    } catch (error) {
+        console.error("Error fetching category products:", error);
+        return { products: [] };
+    }
 }
 
 

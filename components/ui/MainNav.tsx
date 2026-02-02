@@ -5,11 +5,19 @@ import { redirect } from 'next/navigation';
 
 async function getCategory(){
        
-  const request = await fetch(`${process.env.API_URL}/categories`)
+  const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+  
+  if (!apiBase) {
+    console.error("Missing API_URL environment variable");
+    return []; // Devolver vacío si no hay URL para evitar romper el build
+  }
+
+  const request = await fetch(`${apiBase}/categories`)
   const json = await request.json()
 
   if(!request.ok){
-    redirect('/1')
+    // Durante el build, el redirect puede fallar si el servidor no responde
+    return []; 
   }
 
   const categories = CategoriesSchema.parse(json)
