@@ -19,11 +19,13 @@ export const getImagePath=(image:string)=>{
     }else{
        
 
-       if(process.env.API_URL === undefined){
-           return `${process.env.NEXT_PUBLIC_API_URL}/img/${image}`
+       const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+       
+       if(apiBase === undefined){
+           return `/img/${image}` // Fallback local
        }else{
 
-        return `${process.env.API_URL}/img/${image}`
+        return `${apiBase}/img/${image}`
        } 
     }
 

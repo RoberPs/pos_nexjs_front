@@ -10,16 +10,32 @@ import Link from 'next/link'
 
 const getAllProducts = async (take:number,skip:number)=>{
      
-  const url = `${process.env.API_URL}/products?take=${take}&skip=${skip}`
-  const req = await fetch(url)
-  const json = await req.json()
- 
-  const data = ProductsSchemaResponse.parse(json)
+  const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+  
+  if (!apiBase) {
+      console.error("Missing API_URL in getAllProducts");
+      return { products: [], total: 0 };
+  }
 
-  return{
-    products:data.products,
-    total:data.totalCount
-  } 
+  try {
+      const url = `${apiBase}/products?take=${take}&skip=${skip}`
+      const req = await fetch(url)
+      
+      if (!req.ok) {
+          return { products: [], total: 0 };
+      }
+
+      const json = await req.json()
+      const data = ProductsSchemaResponse.parse(json)
+
+      return{
+        products:data.products,
+        total:data.totalCount
+      } 
+  } catch (error) {
+      console.error("Error in getAllProducts:", error);
+      return { products: [], total: 0 };
+  }
 }
 
 //CONSTRUIR EL PAGINADOR 

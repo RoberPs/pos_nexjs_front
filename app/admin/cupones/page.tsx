@@ -5,15 +5,25 @@ import { CouponsSchema } from "@/src/schemas"
 
 const NewCoupons = async() => {
 
-
-    const url = `${process.env.API_URL}/coupons`
-
-    const req = await fetch(url)
-    const json = await req.json()
+    const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
     
+    let data = [];
+    if (apiBase) {
+        try {
+            const url = `${apiBase}/coupons`
+            const req = await fetch(url)
+            
+            if (req.ok) {
+                const json = await req.json()
+                data = CouponsSchema.parse(json)
+            }
+        } catch (error) {
+            console.error("Error fetching coupons:", error);
+        }
+    } else {
+        console.error("Missing API_URL in CuponesPage");
+    }
     
-
-    const data = CouponsSchema.parse(json)
     console.log(data)
    
     return (

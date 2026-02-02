@@ -10,14 +10,27 @@ import { notFound } from 'next/navigation';
 //Función que obtiene el producto de la api
 const getProduct = async (id:string)=>{
 
-  const req =  await fetch(`${process.env.API_URL}/products/${id}`)
-  const json = await req.json()
+  const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
   
-  if(!req.ok){
-    notFound()
+  if (!apiBase) {
+      console.error("Missing API_URL in getProduct");
+      notFound();
   }
-  const product = ProductSchema.parse(json)
-  return product
+
+  try {
+      const req =  await fetch(`${apiBase}/products/${id}`)
+      
+      if(!req.ok){
+        notFound()
+      }
+
+      const json = await req.json()
+      const product = ProductSchema.parse(json)
+      return product
+  } catch (error) {
+      console.error("Error fetching product:", error);
+      notFound();
+  }
 }
 
 

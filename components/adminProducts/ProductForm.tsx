@@ -5,10 +5,23 @@ import UploadProductImage from './UploadProductImage';
 export default async function ProductForm({product}:{product?:Product}) {
 
    //Categorias para el select
-   const url = `${process.env.API_URL}/categories`
-   const request = await fetch(url)
-   const json = await request.json()
-   const categories = CategoriesSchema.parse(json)
+   const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+   
+   let categories = [];
+   if (apiBase) {
+       try {
+           const url = `${apiBase}/categories`
+           const request = await fetch(url)
+           if (request.ok) {
+               const json = await request.json()
+               categories = CategoriesSchema.parse(json)
+           }
+       } catch (error) {
+           console.error("Error fetching categories in ProductForm:", error);
+       }
+   } else {
+       console.error("Missing API_URL in ProductForm");
+   }
    
     return (
       <>
