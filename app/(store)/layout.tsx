@@ -3,6 +3,8 @@ import ShoppingCart from '@/components/cart/ShoppingCart';
 import ToastNotification from '../../components/ui/ToastNotification';
 
 
+import { Suspense } from 'react';
+
 export default function RootLayout({
     children,
   }: Readonly<{
@@ -10,7 +12,9 @@ export default function RootLayout({
   }>) {
     return (
       <>
-         <MainNav />
+         <Suspense fallback={<div className="bg-gray-700 h-24 w-full" />}>
+            <MainNav />
+         </Suspense>
         <main className="lg:flex  lg:h-screen lg:overflow-y-hidden">
             <div className="md:flex-1 md:h-screen md:overflow-y-scroll pt-10  pb-32 px-10">
                 {children}

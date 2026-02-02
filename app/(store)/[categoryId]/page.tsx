@@ -25,7 +25,9 @@ const getCategoryWithProducts = async  (categoryId:string)=>{
         }, 15000)
         
         if(!request.ok){
-            if (categoryId !== '1') redirect('/1')
+            // Si falla, retornamos array vacío en vez de redirigir, 
+            // así el usuario ve al menos la UI (o el mensaje de error si lo implementamos luego)
+            console.error(`Failed to fetch products for category ${categoryId}`);
             return { products: [] }
         }
 
