@@ -6,12 +6,23 @@ const SubmitDeleteForm = ({id}:{id:number}) => {
 
     const handleDeleteCupon = async ()=>{
           "use server"
-          const req = await fetch(`${process.env.API_URL}/coupons/${id}`,{
-             method:'DELETE',
-          })
-          console.log(req)
-          /* await req.json() */
-          revalidatePath('/admin/coupons')    
+          const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+          
+          if (!apiBase) {
+              console.error("Missing API_URL in handleDeleteCupon");
+              return;
+          }
+
+          try {
+              const req = await fetch(`${apiBase}/coupons/${id}`,{
+                 method:'DELETE',
+              })
+              console.log(req)
+              /* await req.json() */
+              revalidatePath('/admin/coupons')    
+          } catch (error) {
+              console.error("Error deleting coupon:", error);
+          }
     }
 
   return (

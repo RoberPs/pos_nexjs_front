@@ -32,32 +32,46 @@ export async function editProduct(id:number,initialState:PrevState,formdata:Form
     }
 
     //Actualizar en backend db
-     
-    const req = await fetch(`http://localhost:3000/products/${id}`,{
-         method:'PATCH',
-         headers:{
-            "Content-Type":"application/json"
-        },
-        body:JSON.stringify(product.data)
-    })
-
-    const json = await req.json()
+    const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
     
-
-    if(!req.ok){
-        const errors = ErrorResponseSchema.parse(json)
-
-        return{
-            errors:errors.message.map(issue=>issue),
-            success:''
+    if (!apiBase) {
+        return {
+            errors: ["API_URL is not configured"],
+            success: ''
         }
     }
-   
-   
-    const success = SuccessResponseSchema.parse(json)
-    
-    return{
-        errors:[],
-        success:success.message
+
+    try {
+        const req = await fetch(`${apiBase}/products/${id}`,{
+             method:'PATCH',
+             headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(product.data)
+        })
+
+        const json = await req.json()
+        
+        if(!req.ok){
+            const errors = ErrorResponseSchema.parse(json)
+
+            return{
+                errors:errors.message.map(issue=>issue),
+                success:''
+            }
+        }
+       
+        const success = SuccessResponseSchema.parse(json)
+        
+        return{
+            errors:[],
+            success:success.message
+        }
+    } catch (error) {
+        console.error("Error editing product:", error);
+        return {
+            errors: ["Error connecting to API"],
+            success: ''
+        }
     }
 }

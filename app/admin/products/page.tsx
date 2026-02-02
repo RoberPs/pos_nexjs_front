@@ -54,7 +54,9 @@ const ProductsPage = async({searchParams}:{searchParams:SearchParams}) => {
   const data = await getAllProducts(productsPerPage, skip)  //peticion de productos con variables 
   const{products,total} = data
   const totalPages = Math.ceil(total / productsPerPage) // Calculo total de paginas
-  if(+page > totalPages) return redirect('/admin/products?page=1') // Evaluar que no se pase de la ultima pagina
+  
+  // Evitar bucle infinito si la API no devuelve nada
+  if(+page > totalPages && totalPages > 0) return redirect('/admin/products?page=1') 
    
  
   return (

@@ -9,11 +9,10 @@ export async function getSalesByDate(date:string){
   
     const domain = process.env.NEXT_PUBLIC_DOMAIN || '';
     
-    // Si estamos en el servidor durante el build y no hay dominio, 
-    // intentamos usar API_URL directamente para evitar el proxy si es posible,
-    // o simplemente devolvemos vacío para no romper la compilación.
-    if (typeof window === 'undefined' && !domain && !process.env.API_URL) {
-        console.warn("No domain or API_URL found for getSalesByDate during build");
+    // Durante el build o en el servidor, fetch() requiere una URL absoluta.
+    // Si no hay dominio, devolvemos vacío para no romper la compilación.
+    if (typeof window === 'undefined' && !domain) {
+        console.warn("No domain found for getSalesByDate during build/SSR. Skipping fetch.");
         return [];
     }
 

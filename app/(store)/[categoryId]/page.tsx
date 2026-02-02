@@ -25,7 +25,8 @@ const getCategoryWithProducts = async  (categoryId:string)=>{
         })
         
         if(!request.ok){
-            redirect('/1')
+            if (categoryId !== '1') redirect('/1')
+            return { products: [] }
         }
 
         const json = await request.json()

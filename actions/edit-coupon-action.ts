@@ -27,35 +27,50 @@ export const updateCupon =async(id:number, initialState:PrevState ,formData:Form
         success:''
       }
    }
-    
-  
-   const req = await fetch(`${process.env.API_URL}/coupons/${id}`,{
-      method:'PATCH',
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify(upCupon.data)
-   })
-
-   const json = await req.json()
-   console.log(json)
-
-   if(!req.ok){
-       
-       const error = ErrorResponseSchema.parse(json)
-
-       return{
-          errors:[error.error],
-          success:''
-       }
-
+   const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+   
+   if (!apiBase) {
+      return {
+          errors: ["API_URL is not configured"],
+          success: ''
+      }
    }
 
-   const success = SuccessResponseSchema.parse(json)
+   try {
+      const req = await fetch(`${apiBase}/coupons/${id}`,{
+         method:'PATCH',
+         headers:{
+           "Content-Type":"application/json"
+         },
+         body:JSON.stringify(upCupon.data)
+      })
 
-   return{
-      errors:[],
-      success:success.message
+      const json = await req.json()
+      console.log(json)
+
+      if(!req.ok){
+          
+          const error = ErrorResponseSchema.parse(json)
+
+          return{
+             errors:[error.error],
+             success:''
+          }
+
+      }
+
+      const success = SuccessResponseSchema.parse(json)
+
+      return{
+         errors:[],
+         success:success.message
+      }
+   } catch (error) {
+       console.error("Error updating coupon:", error);
+       return {
+           errors: ["Error connecting to API"],
+           success: ''
+       }
    }
    
 }

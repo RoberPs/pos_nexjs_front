@@ -8,11 +8,22 @@ const RemoveSubmitForm = ({productId}:{productId:number}) => {
     //CUANDO ES UN CLIENT COMPONENT SIEMPRE EN UN ARCHIVO A PARTE
     const handleDeleteProduct = async ()=>{
         "use server"
-        const req = await fetch(`${process.env.API_URL}/products/${productId}`,{
-           method:'DELETE',
-        })
-        await req.json()
-        revalidatePath('/admin/products')
+        const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+        
+        if (!apiBase) {
+            console.error("Missing API_URL in handleDeleteProduct");
+            return;
+        }
+
+        try {
+            const req = await fetch(`${apiBase}/products/${productId}`,{
+               method:'DELETE',
+            })
+            await req.json()
+            revalidatePath('/admin/products')
+        } catch (error) {
+            console.error("Error deleting product:", error);
+        }
         
     }
 
