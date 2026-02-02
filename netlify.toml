@@ -1,0 +1,12 @@
+[build]
+  # Dado que tu repo es solo la carpeta frontend, el base es la raíz del repo
+  base = "."
+  
+  # Comando para construir
+  command = "npm run build"
+  
+  # Directorio de publicación de Next.js
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
