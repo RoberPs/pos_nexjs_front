@@ -1,7 +1,7 @@
 import { CategoryWithProductsResponseSchema } from "@/src/schemas"
 import ProductCard from "@/components/product/ProductCard"
 import { redirect } from "next/navigation"
-
+import { fetchWithTimeout } from "@/src/api-utils"
 
 type Params = Promise<{categoryId: string}> //Nueva sintaxis next15
 
@@ -18,11 +18,11 @@ const getCategoryWithProducts = async  (categoryId:string)=>{
     const url = `${apiBase}/categories/${categoryId}?products=true`
 
     try {
-        const request  = await fetch(url,{
+        const request  = await fetchWithTimeout(url,{
             next:{
               tags:[ 'products-by-category' ]
             }
-        })
+        }, 15000)
         
         if(!request.ok){
             if (categoryId !== '1') redirect('/1')

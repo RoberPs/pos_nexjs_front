@@ -7,6 +7,8 @@ import {ProductSchema } from '@/src/schemas';
 import { notFound } from 'next/navigation';
 
 
+import { fetchWithTimeout } from '@/src/api-utils';
+
 //Función que obtiene el producto de la api
 const getProduct = async (id:string)=>{
 
@@ -18,7 +20,7 @@ const getProduct = async (id:string)=>{
   }
 
   try {
-      const req =  await fetch(`${apiBase}/products/${id}`)
+      const req =  await fetchWithTimeout(`${apiBase}/products/${id}`, {}, 10000)
       
       if(!req.ok){
         notFound()

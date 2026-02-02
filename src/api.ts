@@ -1,5 +1,4 @@
-
-
+import { fetchWithTimeout } from "./api-utils"
 import { TransactionsResponseSchema } from "./schemas"
 
 //Función reutilizable en pageSales y transitionFilter que obtiene las ventas 
@@ -21,7 +20,7 @@ export async function getSalesByDate(date:string){
         : `/admin/sales/api?transactionDate=${date}`;
 
     try {
-        const req = await fetch(url)
+        const req = await fetchWithTimeout(url, {}, 10000)
         if (!req.ok) return [];
         
         const json = await req.json()

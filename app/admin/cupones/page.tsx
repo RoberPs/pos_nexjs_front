@@ -2,6 +2,7 @@ import Heading from "@/components/ui/Heading"
 import Link from "next/link"
 import CouponTable from "@/components/coupons/CouponTable"
 import { CouponsSchema } from "@/src/schemas"
+import { fetchWithTimeout } from "@/src/api-utils"
 
 const NewCoupons = async() => {
 
@@ -11,7 +12,7 @@ const NewCoupons = async() => {
     if (apiBase) {
         try {
             const url = `${apiBase}/coupons`
-            const req = await fetch(url)
+            const req = await fetchWithTimeout(url, {}, 10000)
             
             if (req.ok) {
                 const json = await req.json()

@@ -1,7 +1,7 @@
 import Logo from '@/components/ui/Logo'
 import { CategoriesSchema } from '@/src/schemas'
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { fetchWithTimeout } from '@/src/api-utils';
 
 async function getCategory(){
        
@@ -13,7 +13,8 @@ async function getCategory(){
   }
 
   try {
-    const request = await fetch(`${apiBase}/categories`)
+    // Definimos un timeout estricto para el build (10 segundos)
+    const request = await fetchWithTimeout(`${apiBase}/categories`, {}, 10000)
     
     if(!request.ok){
       // Durante el build, el servidor puede no estar disponible

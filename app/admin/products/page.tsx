@@ -1,4 +1,3 @@
-
 import ProductsTable from '@/components/adminProducts/ProductsTable'
 import Heading from '@/components/ui/Heading'
 import { ProductsSchemaResponse } from '@/src/schemas'
@@ -6,6 +5,7 @@ import { isValidPage } from '@/src/utils'
 import { redirect } from 'next/navigation'
 import Paginator from '@/components/adminProducts/Paginator'
 import Link from 'next/link'
+import { fetchWithTimeout } from '@/src/api-utils'
 
 
 const getAllProducts = async (take:number,skip:number)=>{
@@ -19,7 +19,7 @@ const getAllProducts = async (take:number,skip:number)=>{
 
   try {
       const url = `${apiBase}/products?take=${take}&skip=${skip}`
-      const req = await fetch(url)
+      const req = await fetchWithTimeout(url, {}, 10000)
       
       if (!req.ok) {
           return { products: [], total: 0 };

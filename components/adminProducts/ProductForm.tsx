@@ -1,5 +1,6 @@
 import { CategoriesSchema, Product} from "@/src/schemas"
 import UploadProductImage from './UploadProductImage';
+import { fetchWithTimeout } from "@/src/api-utils"
 
 //Este componente es reutilizable para los  form de add y edit ya que cada uno conlleva una acción
 export default async function ProductForm({product}:{product?:Product}) {
@@ -11,7 +12,8 @@ export default async function ProductForm({product}:{product?:Product}) {
    if (apiBase) {
        try {
            const url = `${apiBase}/categories`
-           const request = await fetch(url)
+           // Timeout de 10s para evitar bloqueos en el build
+           const request = await fetchWithTimeout(url, {}, 10000)
            if (request.ok) {
                const json = await request.json()
                categories = CategoriesSchema.parse(json)

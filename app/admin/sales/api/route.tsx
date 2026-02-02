@@ -1,5 +1,5 @@
-
 import { NextRequest, NextResponse } from 'next/server';
+import { fetchWithTimeout } from '@/src/api-utils';
 
 export async function GET(request:NextRequest){
 
@@ -17,7 +17,7 @@ export async function GET(request:NextRequest){
     try {
         //Petición al backend y obtiene los datos next (en la ruta sales/api)
         const url = `${apiBase}/transactions?transactionDate=${transactionDate}`
-        const req = await fetch(url)
+        const req = await fetchWithTimeout(url, {}, 10000)
         
         if (!req.ok) {
             return NextResponse.json([]);

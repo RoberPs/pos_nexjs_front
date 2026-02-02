@@ -4,6 +4,8 @@ import Heading from "@/components/ui/Heading"
 import EditCouponForm from "@/components/coupons/EditCouponForm"
 import { notFound } from "next/navigation"
 
+import { fetchWithTimeout } from "@/src/api-utils"
+
 type Params = Promise<{id: string}>
 
 const EditCouponPage = async({params}:{params:Params}) => {
@@ -17,7 +19,7 @@ const EditCouponPage = async({params}:{params:Params}) => {
     }
 
     try {
-        const request = await fetch(`${apiBase}/coupons/${id}`)
+        const request = await fetchWithTimeout(`${apiBase}/coupons/${id}`, {}, 10000)
         if (!request.ok) {
             return notFound();
         }
