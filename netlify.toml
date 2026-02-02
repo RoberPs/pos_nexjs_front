@@ -1,11 +1,8 @@
 [build]
-  # Dado que tu repo es solo la carpeta frontend, el base es la raíz del repo
-  base = "."
-  
-  # Comando para construir
+  # El comando para construir la app
   command = "npm run build"
   
-  # Directorio de publicación de Next.js
+  # El directorio que Netlify debe publicar para Next.js
   publish = ".next"
 
 [build.environment]
