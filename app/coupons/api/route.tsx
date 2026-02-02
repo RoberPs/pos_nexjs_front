@@ -1,6 +1,8 @@
 //SERVICIO DESDE EL STATE 
 //SE EJECUTA EN EL SERVIDOR 
 
+import { fetchWithTimeout } from "@/src/api-utils";
+
 export async function POST(request:Request){
    
    try {
@@ -15,13 +17,15 @@ export async function POST(request:Request){
       }
 
       const url = `${apiBase}/coupons/apply_coupon`
-      const req = await fetch(url,{
+      
+      // POST requests might take slightly longer, set 15s timeout
+      const req = await fetchWithTimeout(url,{
          method:'POST',
          headers:{
             "Content-Type":"application/json"
          },
          body:JSON.stringify(coupon)
-      })
+      }, 15000)
 
       if (!req.ok) {
           const errorResponse = await req.json().catch(() => ({ message: "Error in backend" }));
