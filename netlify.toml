@@ -7,3 +7,4 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  NEXT_PUBLIC_DOMAIN = "https://pos-nexjs-front.netlify.app"
