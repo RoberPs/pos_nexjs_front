@@ -3,18 +3,35 @@
 
 export async function POST(request:Request){
    
-   //Forma de next de recuperar un valor del store (await request.json()) 
-   const coupon = await request.json()
-   const url = `${process.env.API_URL}/coupons/apply_coupon`
-   const req = await fetch(url,{
-      method:'POST',
-      headers:{
-         "Content-Type":"application/json"
-      },
-      body:JSON.stringify(coupon)
-   })
-   const response = await req.json()
-   
+   try {
+      //Forma de next de recuperar un valor del store (await request.json()) 
+      const coupon = await request.json()
+      
+      const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+      
+      if (!apiBase) {
+          console.error("Missing API_URL in coupons API route");
+          return Response.json({ message: "API_URL missing", status: 500 });
+      }
 
-   return Response.json({...response,status:req.status }) //Retornar la respuesta y error para el front
+      const url = `${apiBase}/coupons/apply_coupon`
+      const req = await fetch(url,{
+         method:'POST',
+         headers:{
+            "Content-Type":"application/json"
+         },
+         body:JSON.stringify(coupon)
+      })
+
+      if (!req.ok) {
+          const errorResponse = await req.json().catch(() => ({ message: "Error in backend" }));
+          return Response.json({...errorResponse, status: req.status });
+      }
+
+      const response = await req.json()
+      return Response.json({...response,status:req.status }) //Retornar la respuesta y error para el front
+   } catch (error) {
+       console.error("Error in coupons API route:", error);
+       return Response.json({ message: "Internal server error", status: 500 });
+   }
 }

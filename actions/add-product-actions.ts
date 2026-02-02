@@ -30,7 +30,16 @@ export async function addProduct(initialState:PrevState,formdata:FormData){
         }
     }
     
-    const url = `${process.env.API_URL}/products`
+    const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+    
+    if (!apiBase) {
+        return {
+            errors: ["API_URL is not configured"],
+            success: ''
+        }
+    }
+
+    const url = `${apiBase}/products`
     const request = await fetch(url,{
         method:'POST',
         headers:{

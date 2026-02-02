@@ -7,9 +7,26 @@ export async function GET(request:NextRequest){
     const searchParams =(request.nextUrl.searchParams)
     const transactionDate = searchParams.get('transactionDate')
     
-    //Petición al backend y obtiene los datos next (en la ruta sales/api)
-    const url = `${process.env.API_URL}/transactions?transactionDate=${transactionDate}`
-    const req = await fetch(url)
-    const json = await req.json()
-    return NextResponse.json(json)   
+    const apiBase = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+    
+    if (!apiBase) {
+        console.error("Missing API_URL in sales API route");
+        return NextResponse.json([]);
+    }
+
+    try {
+        //Petición al backend y obtiene los datos next (en la ruta sales/api)
+        const url = `${apiBase}/transactions?transactionDate=${transactionDate}`
+        const req = await fetch(url)
+        
+        if (!req.ok) {
+            return NextResponse.json([]);
+        }
+
+        const json = await req.json()
+        return NextResponse.json(json)   
+    } catch (error) {
+        console.error("Error in sales API route:", error);
+        return NextResponse.json([]);
+    }
 }

@@ -12,17 +12,21 @@ async function getCategory(){
     return []; // Devolver vacío si no hay URL para evitar romper el build
   }
 
-  const request = await fetch(`${apiBase}/categories`)
-  const json = await request.json()
+  try {
+    const request = await fetch(`${apiBase}/categories`)
+    
+    if(!request.ok){
+      // Durante el build, el servidor puede no estar disponible
+      return []; 
+    }
 
-  if(!request.ok){
-    // Durante el build, el redirect puede fallar si el servidor no responde
-    return []; 
+    const json = await request.json()
+    const categories = CategoriesSchema.parse(json)
+    return categories
+  } catch (error) {
+    console.error("Error fetching categories in MainNav:", error);
+    return [];
   }
-
-  const categories = CategoriesSchema.parse(json)
-  return categories
- 
 }
 
 export default async function MainNav() {
